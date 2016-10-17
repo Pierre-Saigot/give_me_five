@@ -34,19 +34,33 @@ section#etudiants h3{
 	margin-bottom: 8%;
 }
 
-#options {
-    display: flex;
-    flex-flow: row;
+#name{
+	cursor: pointer;
+	transition: all 0.3s;
 }
 
-#options li{
+#name:hover{
+	font-size: 1.65rem;
+}
+
+ul#options {
+    margin-left: -90px;
     cursor: pointer;
-    margin-bottom: 0%;
-    width: 10%;
-	transition: all 0.8;
 }
 
-#options li:hover{
+.none{
+	display: none;
+}
+#options li{
+	display: inline;
+	margin-right: -15px;
+	padding: 10px;
+	list-style: none;
+}
+#options li i{
+	transform: all 0.3s;
+}
+#options li:hover i{
 	opacity: 0.8;
 	color: #283593;
 	font-weight: bold;
@@ -55,4 +69,18 @@ section#etudiants h3{
 #lvl{
 	width: 50%;
 	margin-bottom: 25%;
+}
+
+section#edit_profil {
+    position: fixed;
+    width: 80%;
+    background: rgba(41, 41, 41, 0.93);
+    color: #FFF;
+    padding: 20px;
+    height: 500px;
+    top: 28%;
+}
+
+#edit_profil .title_edit{
+	font-weight: 300;
 }
