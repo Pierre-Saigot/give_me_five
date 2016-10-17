@@ -52,7 +52,6 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	document.write('Welcome to my application.');
 	(0, _logger2.default)(); // yes
 	console.log('app loaded');
 

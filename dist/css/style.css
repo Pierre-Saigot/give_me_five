@@ -1,0 +1,58 @@
+a.brand-logo {
+    margin-top: -0.2%;
+    margin-left: -4.3%;
+    font-weight: 300;
+}
+
+a i.material-icons {
+    padding-top: 1%;
+}
+
+#cover img{
+	width: 100%;
+}
+
+section#etudiants {
+    padding: 45px;
+}
+
+section#etudiants h3{
+	font-weight: 400;
+	margin-bottom: 5%; 
+}
+
+.etudiants_list{
+	display: flex;
+	flex-flow: row wrap;
+	justify-content: center;
+	align-items: center;
+	align-content: stretch;
+	margin: 0px auto;
+}
+
+.etudiants_list .etd{
+	margin-bottom: 8%;
+}
+
+#options {
+    display: flex;
+    flex-flow: row;
+}
+
+#options li{
+    cursor: pointer;
+    margin-bottom: 0%;
+    width: 10%;
+	transition: all 0.8;
+}
+
+#options li:hover{
+	opacity: 0.8;
+	color: #283593;
+	font-weight: bold;
+}
+
+#lvl{
+	width: 50%;
+	margin-bottom: 25%;
+}
