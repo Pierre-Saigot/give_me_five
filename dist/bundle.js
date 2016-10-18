@@ -46,17 +46,18 @@
 
 	'use strict';
 
-	var _logger = __webpack_require__(1);
+	var _give_me_five = __webpack_require__(2);
 
-	var _logger2 = _interopRequireDefault(_logger);
+	var _give_me_five2 = _interopRequireDefault(_give_me_five);
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	(0, _logger2.default)(); // yes
-	console.log('app loaded');
+	(0, _give_me_five2.default)(); // Démarrage de l'application
+	console.log('%c Give Me Five was started ! V.10', 'color: red');
 
 /***/ },
-/* 1 */
+/* 1 */,
+/* 2 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -66,7 +67,7 @@
 	});
 
 	exports.default = function () {
-		console.log('logger.js is RUNNING!!');
+		console.log('%c Start give me five...', 'color: #0277BD');
 	};
 
 /***/ }
