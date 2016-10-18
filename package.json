@@ -8,7 +8,7 @@
     "server": "live-server dist/",
     "dev": "start npm run watch && start npm run server"
   },
-  "author": "@rdad",
+  "author": "Pierre Saigot",
   "license": "ISC",
   "devDependencies": {
     "babel-core": "^6.17.0",
