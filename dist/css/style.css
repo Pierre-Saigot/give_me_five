@@ -30,45 +30,60 @@ section#etudiants h3{
 	margin: 0px auto;
 }
 
-.etudiants_list .etd{
-	margin-bottom: 8%;
-}
-
 #name{
 	cursor: pointer;
 	transition: all 0.3s;
+	font-size: 1.8rem;
+	padding-top: 36px;
 }
 
 #name:hover{
-	font-size: 1.65rem;
+	font-size: 2.2rem;
+}
+.card-image img.pp {
+    padding-top: 30px;
+    padding-left: 11px;
+    max-width: 229%!important;
+}
+
+.card .card-content {
+    padding: 0px;
+    border-radius: 0 0 2px 2px;
 }
 
 ul#options {
-    margin-left: -90px;
-    cursor: pointer;
+	list-style-type: none;
+    margin: 0;
+    padding-right: 11%;
+    width: 350px;
 }
 
 .none{
 	display: none;
 }
 #options li{
-	display: inline;
-	margin-right: -15px;
-	padding: 10px;
-	list-style: none;
+	display: inline-block;
 }
 #options li i{
-	transform: all 0.3s;
+    text-decoration: none;
+	color: #2E2E2E;
 }
-#options li:hover i{
-	opacity: 0.8;
+#options li i:hover{
+    cursor: pointer;
+	color: #283593;
+	font-weight: bold;
+}
+
+.selected{
 	color: #283593;
 	font-weight: bold;
 }
 
 #lvl{
-	width: 50%;
-	margin-bottom: 25%;
+	padding-top: 1%;
+	padding-left: 6%;
+	padding-bottom: -3%;
+	width: 75%;
 }
 
 section#edit_profil {

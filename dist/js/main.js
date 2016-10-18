@@ -8,6 +8,6 @@ function edit_profil(){
 	}
 }
 
-$('#name, .title_edit').on('click', function (e){
+$('#name, .title_edit').on('click', function (){
 	edit_profil()
 });
