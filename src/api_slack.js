@@ -2,7 +2,7 @@ var users = {};
 function api_slack() {
         console.log('Api slack starting...');
         /*Token access*/
-        let token = 'xoxp-86302774640-86634928720-92791110017-b3828759df774ef7d0b71868adcdea1e';
+        let token = '';
 
         /*Récupération des groupes privé dans slack*/
         $.ajax({
