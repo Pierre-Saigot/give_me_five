@@ -15,10 +15,9 @@ import {Etudiant} from './etudiants_class';
 				let $list_card = $('.etudiants_list'),
 					$card 	= $list_card.children('#etd').detach();
 
+				$('#number_etudiants').text(e.length);
 
 				for(let j=0; j<e.length; j++){
-					console.log(e[j]);
-
 					/*Score maximum que l'on peut atteindre*/
 				let score_max = 100,
 					/*Score de l'étudiant actuellement*/
@@ -33,6 +32,7 @@ import {Etudiant} from './etudiants_class';
 					/*Duplication d'une card plus ajout des informations unique à chaque étudiant*/
 				let div 		= $card.clone();
 					div.find('#name').text(user_name_complet);
+					div.find('#email').text(e[j].user_email);
 					div.find('#pp').attr('src', user_pp).attr('alt', user_name_complet)
 					div.find('#progress_text').text('' + score_actuel +' pts');
 					div.find('#progress_bar').css('width', ''+pourcentage+'%');
