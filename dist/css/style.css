@@ -1,3 +1,23 @@
+div#loader {
+    position: fixed;
+    width: 100%;
+    background: #0277bd;
+    color: #FFF;
+    z-index: 9999;
+}
+
+#loader i {
+    font-size: 15em;
+}
+
+#loader #logo{
+    margin-left: 4%;
+    margin-top: 16%;
+    -webkit-animation: Loader 1.1991s 16 ease-in-out;
+	-moz-animation: Loader 1.1991s 16 ease-in-out;
+	-o-animation: Loader 1.1991s 16 ease-in-out;
+}
+
 a.brand-logo {
     margin-top: -0.2%;
     margin-left: -4.3%;
@@ -38,7 +58,7 @@ section#etudiants h3{
 }
 
 #name:hover{
-	font-size: 2.2rem;
+	font-size: 2.1rem;
 }
 .card-image img.pp {
     padding-top: 30px;
@@ -99,4 +119,18 @@ section#edit_profil {
 
 #edit_profil .title_edit{
 	font-weight: 300;
+}
+
+/* Annimation loader */
+@-webkit-keyframes Loader {
+from { -webkit-transform: rotate(0deg); }
+to { -webkit-transform: rotate(360deg); }
+}
+@-moz-keyframes Loader {
+from { -moz-transform: rotate(0deg); }
+to { -moz-transform: rotate(360deg); }
+}
+@-o-keyframes Loader {
+from { -o-transform: rotate(0deg); }
+to { -o-transform: rotate(360deg); }
 }

@@ -1,16 +1,20 @@
+/*Importation des informations récupérer avec l'api slack*/
 import * as slack from './api_slack';
+/*Importation de la class Etudiant*/
 import {Etudiant} from './etudiants_class';
 
 	function init() {
 
+			let e = [];
 			slack.api_slack(function(users){
 
-				let e = [];
 				// Les étudiants
 					for(let j=0; j<users.length; j++){
 						let p = users[j];
-						e.push(new Etudiant(p.id, p.user_profile,p.user_first_name, p.user_second_name, p.user_email))
+						e.push(new Etudiant(p.id, p.user_profile,p.user_first_name, p.user_second_name, p.user_email, p.color));
 					}
+
+				let requests = [];
 
 				let $list_card = $('.etudiants_list'),
 					$card 	= $list_card.children('#etd').detach();
@@ -29,16 +33,23 @@ import {Etudiant} from './etudiants_class';
 				let user_name_complet = e[j].user_first_name +" "+ e[j].user_second_name,
 					user_pp  		  = e[j].user_profile;
 
-					/*Duplication d'une card plus ajout des informations unique à chaque étudiant*/
+
+				/*Duplication d'une card plus ajout des informations unique à chaque étudiant*/
 				let div 		= $card.clone();
+
 					div.find('#name').text(user_name_complet);
+					div.attr('id', j);
 					div.find('#email').text(e[j].user_email);
 					div.find('#pp').attr('src', user_pp).attr('alt', user_name_complet)
 					div.find('#progress_text').text('' + score_actuel +' pts');
 					div.find('#progress_bar').css('width', ''+pourcentage+'%');
+
 					/*Ajout de la card unifiée dans son espace dédié*/
 					$list_card.append(div);
 				}
 		});
 	}
+	
+
+/*Exportation de l'initation des cards étudiants pour le start dans le fichier app.js*/
 export {init}

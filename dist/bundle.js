@@ -46,38 +46,21 @@
 
 	'use strict';
 
-	var _give_me_five = __webpack_require__(1);
-
-	var _give_me_five2 = _interopRequireDefault(_give_me_five);
-
-	var _etudiants_tools = __webpack_require__(2);
+	var _etudiants_tools = __webpack_require__(1);
 
 	var etudiants_tools = _interopRequireWildcard(_etudiants_tools);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+	console.log('%c Give Me Five start...', 'color: #0277BD');
 
-	(0, _give_me_five2.default)(); // Start application
-	console.log('Give Me Five V0.1 was started');
-	etudiants_tools.init(); // Clone des cards plus traitement des données
+	// Importation du fichier etudiants_tools traitement + affichage des étudiants
+	etudiants_tools.init(); // Affichage des étudiants sous forme de card
+
+	console.log('%c Give Me Five V0.1 was started !', 'color: #0277BD');
 
 /***/ },
 /* 1 */
-/***/ function(module, exports) {
-
-	'use strict';
-
-	Object.defineProperty(exports, "__esModule", {
-			value: true
-	});
-
-	exports.default = function () {
-			console.log('Start Give Me Five...');
-	};
-
-/***/ },
-/* 2 */
 /***/ function(module, exports, __webpack_require__) {
 
 	'use strict';
@@ -87,24 +70,27 @@
 	});
 	exports.init = undefined;
 
-	var _api_slack = __webpack_require__(3);
+	var _api_slack = __webpack_require__(2);
 
 	var slack = _interopRequireWildcard(_api_slack);
 
-	var _etudiants_class = __webpack_require__(4);
+	var _etudiants_class = __webpack_require__(3);
 
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
+	/*Importation des informations récupérer avec l'api slack*/
 	function init() {
 
+		var e = [];
 		slack.api_slack(function (users) {
 
-			var e = [];
 			// Les étudiants
 			for (var j = 0; j < users.length; j++) {
 				var p = users[j];
-				e.push(new _etudiants_class.Etudiant(p.id, p.user_profile, p.user_first_name, p.user_second_name, p.user_email));
+				e.push(new _etudiants_class.Etudiant(p.id, p.user_profile, p.user_first_name, p.user_second_name, p.user_email, p.color));
 			}
+
+			var requests = [];
 
 			var $list_card = $('.etudiants_list'),
 			    $card = $list_card.children('#etd').detach();
@@ -127,20 +113,27 @@
 
 				/*Duplication d'une card plus ajout des informations unique à chaque étudiant*/
 				var div = $card.clone();
+
 				div.find('#name').text(user_name_complet);
+				div.attr('id', _j);
 				div.find('#email').text(e[_j].user_email);
 				div.find('#pp').attr('src', user_pp).attr('alt', user_name_complet);
 				div.find('#progress_text').text('' + score_actuel + ' pts');
 				div.find('#progress_bar').css('width', '' + pourcentage + '%');
+
 				/*Ajout de la card unifiée dans son espace dédié*/
 				$list_card.append(div);
 			}
 		});
 	}
+
+	/*Exportation de l'initation des cards étudiants pour le start dans le fichier app.js*/
+
+	/*Importation de la class Etudiant*/
 	exports.init = init;
 
 /***/ },
-/* 3 */
+/* 2 */
 /***/ function(module, exports) {
 
 	'use strict';
@@ -157,7 +150,7 @@
 
 	/*Création de la fonction*/
 	function api_slack(callback) {
-	    console.log('Api slack starting...');
+	    console.log('%c Api slack began to recover information...', 'color: #0277BD');
 	    /*Token access*/
 	    var token = '';
 	    /*Récupération des groupes privé dans slack*/
@@ -173,15 +166,15 @@
 	                var slackProfil = response.user.profile;
 	                /*Ajout des données récupérer par l'api dans le tableau*/
 	                if (!response.user.is_admin) {
-	                    profiles = { id: response.user.id, user_profile: slackProfil.image_192, user_first_name: slackProfil.first_name, user_second_name: slackProfil.last_name, user_email: slackProfil.email };
+	                    profiles = { id: response.user.id, user_profile: slackProfil.image_192, user_first_name: slackProfil.first_name, user_second_name: slackProfil.last_name, user_email: slackProfil.email, color: response.user.color };
 	                    users.push(profiles);
 	                }
 	            }));
 	        }
 
 	        $.when.apply($, requests).then(function () {
-	            /*Affichage dans la console quand les requetes sont finis*/
-	            console.log('All data is loaded...');
+	            /*Fin de la récupération des données grace à l'api export des données récupérer...*/
+	            console.log('%c Api slack recover all data !', 'color: #0277BD');
 	            if (callback) {
 	                callback(users);
 	            }
@@ -193,10 +186,10 @@
 	exports.api_slack = api_slack;
 
 /***/ },
-/* 4 */
+/* 3 */
 /***/ function(module, exports) {
 
-	"use strict";
+	'use strict';
 
 	Object.defineProperty(exports, "__esModule", {
 		value: true
@@ -204,7 +197,7 @@
 
 	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-	var Etudiant = function Etudiant(id, user_profile, user_first_name, user_second_name, user_email) {
+	var Etudiant = function Etudiant(id, user_profile, user_first_name, user_second_name, user_email, color) {
 		_classCallCheck(this, Etudiant);
 
 		this.id = id;
@@ -212,6 +205,7 @@
 		this.user_first_name = user_first_name;
 		this.user_second_name = user_second_name;
 		this.user_email = user_email;
+		this.color = '#' + color;
 		this.score = 0;
 	};
 

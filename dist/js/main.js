@@ -1,3 +1,10 @@
+let height = $( document ).height();
+$('#loader').css('height', height);
+
+function loader(){
+		$('#loader').addClass('none');
+}
+
 function edit_profil(){
 	var element = $('#edit_profil').hasClass("none");
 	if(element == true){

@@ -7,7 +7,7 @@ let profiles = {},
 
 /*Création de la fonction*/
 function api_slack(callback) {
-        console.log('Api slack starting...');
+        console.log('%c Api slack began to recover information...', 'color: #0277BD');
         /*Token access*/
         let token = '';
          /*Récupération des groupes privé dans slack*/
@@ -27,15 +27,15 @@ function api_slack(callback) {
                             let slackProfil = response.user.profile
                              /*Ajout des données récupérer par l'api dans le tableau*/
                             if (!response.user.is_admin){
-                                profiles = {id: response.user.id, user_profile:slackProfil.image_192, user_first_name:slackProfil.first_name, user_second_name:slackProfil.last_name, user_email:slackProfil.email};
+                                profiles = {id: response.user.id, user_profile:slackProfil.image_192, user_first_name:slackProfil.first_name, user_second_name:slackProfil.last_name, user_email:slackProfil.email, color:response.user.color};
                                 users.push(profiles);
                             }
                         }))
                 }
 
                 $.when.apply($,requests).then(function(){
-                /*Affichage dans la console quand les requetes sont finis*/
-                console.log('All data is loaded...')
+                /*Fin de la récupération des données grace à l'api export des données récupérer...*/
+                console.log('%c Api slack recover all data !', 'color: #0277BD');
                     if(callback){
                         callback(users)
                     }
