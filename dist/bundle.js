@@ -57,10 +57,7 @@
 	// Importation du fichier etudiants_tools traitement + affichage des étudiants
 
 	/*Initialisation d'étudiants tools*/
-	etudiants_tools.init(function (users) {
-		/*Envoie des étudiants récupérer dans l'initiation dans la fonction getUsers*/
-		/*etudiants_tools.updateScore(users, 5, 1999);*/
-	});
+	etudiants_tools.init();
 
 	console.log('%c Give Me Five V0.1 was started !', 'color: #0277BD');
 
@@ -132,6 +129,10 @@
 				/*Ajout de la card unifiée dans son espace dédié*/
 				$list_card.append(div);
 
+				var present = 0,
+				    retard = 0,
+				    absent = 0;
+
 				$(div.find('li')).on("click", function () {
 
 					/*Gestion des clicks en mode "radio" + récupération du type d'event*/
@@ -151,23 +152,36 @@
 
 					/*Si on click sur present*/
 					if (id == "present") {
-						score_actuel = e[_j].score += 10;
-						update_visuel();
+						if (present == 0) {
+							score_actuel = e[_j].score += 10;
+							update_visuel();
+							present = 1;
+							retard = 0;
+							absent = 0;
+						}
 					}
 
 					/*Si on click sur retard*/
 					else if (id == "retard") {
-							score_actuel = e[_j].score -= 2;
-							update_visuel();
+							if (retard == 0) {
+								score_actuel = e[_j].score -= 2;
+								update_visuel();
+								present = 0;
+								retard = 1;
+								absent = 0;
+							}
 						}
 
 						/*Si on click sur absent*/
 						else if (id == "absent") {
-								score_actuel = e[_j].score -= 10;
-								update_visuel();
+								if (absent == 0) {
+									score_actuel = e[_j].score -= 10;
+									update_visuel();
+									present = 0;
+									retard = 0;
+									absent = 1;
+								}
 							}
-
-					console.log(e[_j]);
 				});
 			};
 
@@ -205,7 +219,7 @@
 	function api_slack(callback) {
 	    console.log('%c Api slack began to recover information...', 'color: #0277BD');
 	    /*Token access*/
-	    var token = '';
+	    var token = 'xoxp-86302774640-86634928720-93965197681-792449b4eb3c471a9900da86c3a26d4f';
 	    /*Récupération des groupes privé dans slack*/
 	    $.ajax("https://slack.com/api/groups.list?token=" + token + "&pretty=1").done(function (response) {
 

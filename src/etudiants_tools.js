@@ -51,6 +51,10 @@ import {Etudiant} from './etudiants_class';
 					/*Ajout de la card unifiée dans son espace dédié*/
 					$list_card.append(div);
 
+					let present = 0,
+						retard 	= 0,
+						absent 	= 0;
+
 					$(div.find('li')).on( "click", function() {
 
 						/*Gestion des clicks en mode "radio" + récupération du type d'event*/
@@ -68,25 +72,39 @@ import {Etudiant} from './etudiants_class';
 							div.find('#progress_bar').css('width', ''+pourcentage+'%');
 						}
 
+
 						/*Si on click sur present*/
 						if(id == "present"){
-							score_actuel = e[j].score += 10;
-							update_visuel();
+							if(present == 0){
+								score_actuel = e[j].score += 10;
+								update_visuel();
+								present = 1;
+								retard = 0;
+								absent = 0;
+							}
 						}
 
 						/*Si on click sur retard*/
 						else if(id == "retard"){
-							score_actuel = e[j].score -= 2;
-							update_visuel();
+							if(retard == 0){
+								score_actuel = e[j].score -= 2;
+								update_visuel();
+								present = 0;
+								retard = 1;
+								absent = 0;
+							}	
 						}
 
 						/*Si on click sur absent*/
 						else if(id == "absent"){
-							score_actuel = e[j].score -= 10;
-							update_visuel();
+							if(absent == 0){
+								score_actuel = e[j].score -= 10;
+								update_visuel();
+								present = 0;
+								retard = 0;
+								absent = 1;
+							}
 						}
-
-						console.log(e[j]);
 					});
 
 			}
