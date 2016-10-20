@@ -5,7 +5,7 @@ console.log('%c Give Me Five start...', 'color: #0277BD');
 	/*Initialisation d'étudiants tools*/
 	etudiants_tools.init(function(users){
 		/*Envoie des étudiants récupérer dans l'initiation dans la fonction getUsers*/
-		etudiants_tools.updateScore(users, 5, 1999);
+		/*etudiants_tools.updateScore(users, 5, 1999);*/
 	})
 
 

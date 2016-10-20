@@ -6,7 +6,13 @@ import {Etudiant} from './etudiants_class';
 	let e = [];
 	function init(my_users) {
 
-			let ok = [];
+			let ok = [],
+				score_actuel = 0,
+				/*Score maximum que l'on peut atteindre*/
+				score_max = 100,
+				/*calcul du pourcentage pour la progress_bar*/
+				pourcentage = (100*score_actuel/score_max);
+
 			slack.api_slack(function(users){
 
 				// Les étudiants
@@ -21,13 +27,12 @@ import {Etudiant} from './etudiants_class';
 
 				$('#number_etudiants').text(e.length);
 
+
 				for(let j=0; j<e.length; j++){
-					/*Score maximum que l'on peut atteindre*/
-				let score_max = 100,
+					
 					/*Score de l'étudiant actuellement*/
-					score_actuel = e[j].score,
-					/*calcul du pourcentage pour la progress_bar*/
-					pourcentage = (100*score_actuel/score_max);
+					score_actuel = e[j].score;
+
 
 				/*Récupération des informations traiter par l'api plus intégration dans des variables*/
 				let user_name_complet = e[j].user_first_name +" "+ e[j].user_second_name,
@@ -36,9 +41,8 @@ import {Etudiant} from './etudiants_class';
 
 				/*Duplication d'une card plus ajout des informations unique à chaque étudiant*/
 				let div 		= $card.clone();
-
 					div.find('#name').text(user_name_complet);
-					div.attr('id', j);
+					div.attr('id_user', j);
 					div.find('#email').text(e[j].user_email);
 					div.find('#pp').attr('src', user_pp).attr('alt', user_name_complet)
 					div.find('#progress_text').text('' + score_actuel +' pts');
@@ -47,10 +51,43 @@ import {Etudiant} from './etudiants_class';
 					/*Ajout de la card unifiée dans son espace dédié*/
 					$list_card.append(div);
 
-				$(div.find('li')).on( "click", function() {
-					$(div.find('li')).removeClass('selected');
-					$(this).addClass('selected');
-				});
+					$(div.find('li')).on( "click", function() {
+
+						/*Gestion des clicks en mode "radio" + récupération du type d'event*/
+						let id = $(this).attr('id'),
+							id_user = div.attr('id_user');
+
+							$(div.find('li')).removeClass('selected');
+							$(this).addClass('selected');
+
+						/*Mise à jour graphique des données */
+						function update_visuel(){
+							div.find('#progress_text').text('' + score_actuel +' pts');
+							/*mise à jour de cette variable*/
+							pourcentage = (100*score_actuel/score_max);
+							div.find('#progress_bar').css('width', ''+pourcentage+'%');
+						}
+
+						/*Si on click sur present*/
+						if(id == "present"){
+							score_actuel = e[j].score += 10;
+							update_visuel();
+						}
+
+						/*Si on click sur retard*/
+						else if(id == "retard"){
+							score_actuel = e[j].score -= 2;
+							update_visuel();
+						}
+
+						/*Si on click sur absent*/
+						else if(id == "absent"){
+							score_actuel = e[j].score -= 10;
+							update_visuel();
+						}
+
+						console.log(e[j]);
+					});
 
 			}
 			$.when.apply($,ok).then(function(){
@@ -60,17 +97,5 @@ import {Etudiant} from './etudiants_class';
             })
 		});
 	}
-
-	function updateScore(etudiants, id, new_score){
-		this.etudiants 	= etudiants;
-		this.id 		= id;
-
-		let update =	this.etudiants[this.id].score += new_score;
-
-		console.log(this.etudiants[this.id]);
-
-	}
-	
-
 /*Exportation de l'initation des cards étudiants pour le start dans le fichier app.js*/
-export {init, e, updateScore}
+export {init, e}
