@@ -205,7 +205,7 @@
 	function api_slack(callback) {
 	    console.log('%c Api slack began to recover information...', 'color: #0277BD');
 	    /*Token access*/
-	    var token = 'xoxp-86302774640-86634928720-93848213730-cf6f61c294b655078ffc024639241867';
+	    var token = '';
 	    /*Récupération des groupes privé dans slack*/
 	    $.ajax("https://slack.com/api/groups.list?token=" + token + "&pretty=1").done(function (response) {
 
