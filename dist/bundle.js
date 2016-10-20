@@ -55,7 +55,12 @@
 	console.log('%c Give Me Five start...', 'color: #0277BD');
 
 	// Importation du fichier etudiants_tools traitement + affichage des étudiants
-	etudiants_tools.init(); // Affichage des étudiants sous forme de card
+
+	/*Initialisation d'étudiants tools*/
+	etudiants_tools.init(function (users) {
+		/*Envoie des étudiants récupérer dans l'initiation dans la fonction getUsers*/
+		etudiants_tools.updateScore(users, 5, 1999);
+	});
 
 	console.log('%c Give Me Five V0.1 was started !', 'color: #0277BD');
 
@@ -68,7 +73,7 @@
 	Object.defineProperty(exports, "__esModule", {
 		value: true
 	});
-	exports.init = undefined;
+	exports.updateScore = exports.e = exports.init = undefined;
 
 	var _api_slack = __webpack_require__(2);
 
@@ -79,9 +84,12 @@
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	/*Importation des informations récupérer avec l'api slack*/
-	function init() {
+	var e = [];
+	/*Importation de la class Etudiant*/
 
-		var e = [];
+	function init(my_users) {
+
+		var ok = [];
 		slack.api_slack(function (users) {
 
 			// Les étudiants
@@ -90,14 +98,12 @@
 				e.push(new _etudiants_class.Etudiant(p.id, p.user_profile, p.user_first_name, p.user_second_name, p.user_email, p.color));
 			}
 
-			var requests = [];
-
 			var $list_card = $('.etudiants_list'),
 			    $card = $list_card.children('#etd').detach();
 
 			$('#number_etudiants').text(e.length);
 
-			for (var _j = 0; _j < e.length; _j++) {
+			var _loop = function _loop(_j) {
 				/*Score maximum que l'on peut atteindre*/
 				var score_max = 100,
 
@@ -123,14 +129,37 @@
 
 				/*Ajout de la card unifiée dans son espace dédié*/
 				$list_card.append(div);
+
+				$(div.find('li')).on("click", function () {
+					$(div.find('li')).removeClass('selected');
+					$(this).addClass('selected');
+				});
+			};
+
+			for (var _j = 0; _j < e.length; _j++) {
+				_loop(_j);
 			}
+			$.when.apply($, ok).then(function () {
+				if (my_users) {
+					my_users(e);
+				}
+			});
 		});
 	}
 
-	/*Exportation de l'initation des cards étudiants pour le start dans le fichier app.js*/
+	function updateScore(etudiants, id, new_score) {
+		this.etudiants = etudiants;
+		this.id = id;
 
-	/*Importation de la class Etudiant*/
+		var update = this.etudiants[this.id].score += new_score;
+
+		console.log(this.etudiants[this.id]);
+	}
+
+	/*Exportation de l'initation des cards étudiants pour le start dans le fichier app.js*/
 	exports.init = init;
+	exports.e = e;
+	exports.updateScore = updateScore;
 
 /***/ },
 /* 2 */
@@ -152,7 +181,7 @@
 	function api_slack(callback) {
 	    console.log('%c Api slack began to recover information...', 'color: #0277BD');
 	    /*Token access*/
-	    var token = '';
+	    var token = 'xoxp-86302774640-86634928720-93848213730-cf6f61c294b655078ffc024639241867';
 	    /*Récupération des groupes privé dans slack*/
 	    $.ajax("https://slack.com/api/groups.list?token=" + token + "&pretty=1").done(function (response) {
 

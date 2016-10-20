@@ -3,18 +3,18 @@ import * as slack from './api_slack';
 /*Importation de la class Etudiant*/
 import {Etudiant} from './etudiants_class';
 
-	function init() {
+	let e = [];
+	function init(my_users) {
 
-			let e = [];
+			let ok = [];
 			slack.api_slack(function(users){
 
 				// Les étudiants
-					for(let j=0; j<users.length; j++){
-						let p = users[j];
-						e.push(new Etudiant(p.id, p.user_profile,p.user_first_name, p.user_second_name, p.user_email, p.color));
-					}
+				for(let j=0; j<users.length; j++){
+					let p = users[j];
+					e.push(new Etudiant(p.id, p.user_profile,p.user_first_name, p.user_second_name, p.user_email, p.color));
+				}
 
-				let requests = [];
 
 				let $list_card = $('.etudiants_list'),
 					$card 	= $list_card.children('#etd').detach();
@@ -46,10 +46,31 @@ import {Etudiant} from './etudiants_class';
 
 					/*Ajout de la card unifiée dans son espace dédié*/
 					$list_card.append(div);
-				}
+
+				$(div.find('li')).on( "click", function() {
+					$(div.find('li')).removeClass('selected');
+					$(this).addClass('selected');
+				});
+
+			}
+			$.when.apply($,ok).then(function(){
+                if(my_users){
+                    my_users(e)
+                }
+            })
 		});
+	}
+
+	function updateScore(etudiants, id, new_score){
+		this.etudiants 	= etudiants;
+		this.id 		= id;
+
+		let update =	this.etudiants[this.id].score += new_score;
+
+		console.log(this.etudiants[this.id]);
+
 	}
 	
 
 /*Exportation de l'initation des cards étudiants pour le start dans le fichier app.js*/
-export {init}
+export {init, e, updateScore}

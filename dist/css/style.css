@@ -1,3 +1,9 @@
+body{
+	-webkit-user-select: none;
+	-moz-user-select: -moz-none;
+	-ms-user-select: none;
+	user-select: none;
+}
 div#loader {
     position: fixed;
     width: 100%;
@@ -80,7 +86,7 @@ ul#options {
 }
 
 .none{
-	display: none;
+	display: none!important;
 }
 #options li{
 	display: inline-block;
@@ -95,8 +101,8 @@ ul#options {
 	font-weight: bold;
 }
 
-.selected{
-	color: #283593;
+.selected i{
+	color: #283593!important;
 	font-weight: bold;
 }
 
@@ -107,19 +113,6 @@ ul#options {
 	width: 75%;
 }
 
-section#edit_profil {
-    position: fixed;
-    width: 80%;
-    background: rgba(41, 41, 41, 0.93);
-    color: #FFF;
-    padding: 20px;
-    height: 500px;
-    top: 28%;
-}
-
-#edit_profil .title_edit{
-	font-weight: 300;
-}
 
 /* Annimation loader */
 @-webkit-keyframes Loader {
