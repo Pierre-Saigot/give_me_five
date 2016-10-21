@@ -50,14 +50,36 @@
 
 	var etudiants_tools = _interopRequireWildcard(_etudiants_tools);
 
+	var _gestion_date = __webpack_require__(4);
+
+	var gestion_date = _interopRequireWildcard(_gestion_date);
+
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
-	console.log('%c Give Me Five start...', 'color: #0277BD');
+	console.log('%c Give Me Five start...', 'color: #0277BD'); // Importation du fichier etudiants_tools traitement + affichage des étudiants
 
-	// Importation du fichier etudiants_tools traitement + affichage des étudiants
 
 	/*Initialisation d'étudiants tools*/
 	etudiants_tools.init();
+	gestion_date.init();
+
+	$(document).ready(function () {
+		$('.modal-trigger').leanModal({
+			dismissible: true, // Modal can be dismissed by clicking outside of the modal
+			opacity: .5, // Opacity of modal background
+			in_duration: 300, // Transition in duration
+			out_duration: 200, // Transition out duration
+			starting_top: '14%', // Starting top style attribute
+			complete: function complete() {} // Callback for Modal close
+		});
+	});
+	$('.modal-footer a').on("click", function () {
+		var id = $(this).attr('id');
+		if (id == 'yes') {
+			localStorage.removeItem('saved');
+			location.reload();
+		}
+	});
 
 	console.log('%c Give Me Five V0.1 was started !', 'color: #0277BD');
 
@@ -81,7 +103,9 @@
 	function _interopRequireWildcard(obj) { if (obj && obj.__esModule) { return obj; } else { var newObj = {}; if (obj != null) { for (var key in obj) { if (Object.prototype.hasOwnProperty.call(obj, key)) newObj[key] = obj[key]; } } newObj.default = obj; return newObj; } }
 
 	/*Importation des informations récupérer avec l'api slack*/
-	var e = [];
+	var e = [],
+	    stock = {},
+	    stock_score = [];
 	/*Importation de la class Etudiant*/
 
 	function init(my_users) {
@@ -96,11 +120,15 @@
 		pourcentage = 100 * score_actuel / score_max;
 
 		slack.api_slack(function (users) {
-
-			// Les étudiants
-			for (var j = 0; j < users.length; j++) {
-				var p = users[j];
-				e.push(new _etudiants_class.Etudiant(p.id, p.user_profile, p.user_first_name, p.user_second_name, p.user_email, p.color));
+			var saved = JSON.parse(localStorage.getItem("saved"));
+			if (saved == null) {
+				// Les étudiants
+				for (var j = 0; j < users.length; j++) {
+					var p = users[j];
+					e.push(new _etudiants_class.Etudiant(p.id, p.user_profile, p.user_first_name, p.user_second_name, p.user_email, p.color));
+				}
+			} else {
+				exports.e = e = saved;
 			}
 
 			var $list_card = $('.etudiants_list'),
@@ -153,7 +181,13 @@
 					/*Si on click sur present*/
 					if (id == "present") {
 						if (present == 0) {
-							score_actuel = e[_j].score += 10;
+							if (retard == 1) {
+								score_actuel = e[_j].score += 12;
+							} else if (absent == 1) {
+								score_actuel = e[_j].score += 20;
+							} else {
+								score_actuel = e[_j].score += 10;
+							}
 							update_visuel();
 							present = 1;
 							retard = 0;
@@ -164,7 +198,13 @@
 					/*Si on click sur retard*/
 					else if (id == "retard") {
 							if (retard == 0) {
-								score_actuel = e[_j].score -= 2;
+								if (present == 1) {
+									score_actuel = e[_j].score -= 12;
+								} else if (absent == 1) {
+									score_actuel = e[_j].score += 8;
+								} else {
+									score_actuel = e[_j].score -= 2;
+								}
 								update_visuel();
 								present = 0;
 								retard = 1;
@@ -175,13 +215,20 @@
 						/*Si on click sur absent*/
 						else if (id == "absent") {
 								if (absent == 0) {
-									score_actuel = e[_j].score -= 10;
+									if (present == 1) {
+										score_actuel = e[_j].score -= 20;
+									} else if (retard == 1) {
+										score_actuel = e[_j].score -= 8;
+									} else {
+										score_actuel = e[_j].score -= 10;
+									}
 									update_visuel();
 									present = 0;
 									retard = 0;
 									absent = 1;
 								}
 							}
+					localStorage.setItem('saved', JSON.stringify(e));
 				});
 			};
 
@@ -219,7 +266,7 @@
 	function api_slack(callback) {
 	    console.log('%c Api slack began to recover information...', 'color: #0277BD');
 	    /*Token access*/
-	    var token = 'xoxp-86302774640-86634928720-93965197681-792449b4eb3c471a9900da86c3a26d4f';
+	    var token = '';
 	    /*Récupération des groupes privé dans slack*/
 	    $.ajax("https://slack.com/api/groups.list?token=" + token + "&pretty=1").done(function (response) {
 
@@ -277,6 +324,23 @@
 	};
 
 	exports.Etudiant = Etudiant;
+
+/***/ },
+/* 4 */
+/***/ function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+		value: true
+	});
+	function init() {
+		moment.locale('fr');
+		var day = moment().format("dddd D MMMM");;
+		$('#today').text(day + ".");
+	}
+
+	exports.init = init;
 
 /***/ }
 /******/ ]);

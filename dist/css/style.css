@@ -12,6 +12,19 @@ div#loader {
     z-index: 9999;
 }
 
+h2#today {
+    font-weight: bold;
+    font-size: 4.7em;
+    color: #FFF;
+    position: absolute;
+    margin: 9% 30%;
+    text-shadow: 2px 1px 7px rgba(46, 46, 46, 0.38);
+}
+
+h2#today::first-letter{
+	text-transform: uppercase;
+}
+
 #loader i {
     font-size: 15em;
 }

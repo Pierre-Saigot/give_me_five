@@ -3,7 +3,9 @@ import * as slack from './api_slack';
 /*Importation de la class Etudiant*/
 import {Etudiant} from './etudiants_class';
 
-	let e = [];
+	let e 		= [],
+		stock 	= {},
+		stock_score = [];
 	function init(my_users) {
 
 			let ok = [],
@@ -14,12 +16,17 @@ import {Etudiant} from './etudiants_class';
 				pourcentage = (100*score_actuel/score_max);
 
 			slack.api_slack(function(users){
-
-				// Les étudiants
-				for(let j=0; j<users.length; j++){
-					let p = users[j];
-					e.push(new Etudiant(p.id, p.user_profile,p.user_first_name, p.user_second_name, p.user_email, p.color));
+				var saved = JSON.parse(localStorage.getItem("saved"));
+				if(saved == null){
+					// Les étudiants
+					for(let j=0; j<users.length; j++){
+						let p = users[j];
+						e.push(new Etudiant(p.id, p.user_profile,p.user_first_name, p.user_second_name, p.user_email, p.color));
+					}
+				}else{
+					e = saved;
 				}
+
 
 
 				let $list_card = $('.etudiants_list'),
@@ -32,7 +39,7 @@ import {Etudiant} from './etudiants_class';
 					
 					/*Score de l'étudiant actuellement*/
 					score_actuel = e[j].score;
-
+				
 
 				/*Récupération des informations traiter par l'api plus intégration dans des variables*/
 				let user_name_complet = e[j].user_first_name +" "+ e[j].user_second_name,
@@ -57,6 +64,7 @@ import {Etudiant} from './etudiants_class';
 
 					$(div.find('li')).on( "click", function() {
 
+
 						/*Gestion des clicks en mode "radio" + récupération du type d'event*/
 						let id = $(this).attr('id'),
 							id_user = div.attr('id_user');
@@ -76,7 +84,15 @@ import {Etudiant} from './etudiants_class';
 						/*Si on click sur present*/
 						if(id == "present"){
 							if(present == 0){
-								score_actuel = e[j].score += 10;
+								if(retard == 1){
+									score_actuel = e[j].score += 12;
+								}
+								else if (absent == 1){
+									score_actuel = e[j].score += 20;
+								}
+								else{
+									score_actuel = e[j].score += 10;
+								}
 								update_visuel();
 								present = 1;
 								retard = 0;
@@ -87,24 +103,42 @@ import {Etudiant} from './etudiants_class';
 						/*Si on click sur retard*/
 						else if(id == "retard"){
 							if(retard == 0){
-								score_actuel = e[j].score -= 2;
+								if(present == 1){
+									score_actuel = e[j].score -= 12;
+								}
+								else if (absent == 1){
+									score_actuel = e[j].score += 8;
+								}
+								else{
+									score_actuel = e[j].score -= 2;
+								}
 								update_visuel();
 								present = 0;
 								retard = 1;
 								absent = 0;
-							}	
+							}
 						}
 
 						/*Si on click sur absent*/
 						else if(id == "absent"){
 							if(absent == 0){
-								score_actuel = e[j].score -= 10;
+								if(present == 1){
+									score_actuel = e[j].score -= 20;
+								}
+								else if (retard == 1){
+									score_actuel = e[j].score -= 8;
+								}
+								else{
+									score_actuel = e[j].score -= 10;
+								}
 								update_visuel();
 								present = 0;
 								retard = 0;
 								absent = 1;
 							}
 						}
+						localStorage.setItem('saved', JSON.stringify(e));
+
 					});
 
 			}
